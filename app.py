@@ -52,7 +52,15 @@ def delete():
         database.session.delete(task)
         database.session.commit()
 
+    # Reassign serial numbers
+    allTasks = Task.query.order_by(Task.sno).all()
+    for index, task in enumerate(allTasks, start=1):
+        task.sno = index
+    database.session.commit()
+
     return redirect("/")
+
+
 
 @app.route("/update", methods=["GET", "POST"])
 def update():
